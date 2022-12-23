@@ -4,6 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
 require('dotenv').config();
+
 const userRouter = require('./routes/user')
 
 app.set("view engine", "ejs");
@@ -11,12 +12,13 @@ app.set("view engine", "ejs");
 connectDB();
 app.use(cors())
 app.options('*', cors())
-
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes
 app.use('/api/user', userRouter);
+
+
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server Connected to port ${process.env.PORT}`)
