@@ -5,9 +5,7 @@ const addUser = async (req, res) => {
         return res.status(400).send("Body can`t be empty")
 
     }
-
     const {email,username,password,cv} = req.body;
-    console.log(req.body);
     const existingEmail = await User.findOne({email})
     if (existingEmail){
         return res.status(409).send("Email already exist")
@@ -20,5 +18,24 @@ const addUser = async (req, res) => {
     return res.status(201).send(newUser)
 }
 
+const checkUser = async (req, res) => {
+    if (Object.keys(req.body).length === 0){
+        return res.status(400).send("Body can`t be empty")
+    }
+    const {username,password} = req.body;
 
-module.exports = addUser;
+    const existingNickName = await User.findOne({username})
+    if (!existingNickName){
+        return res.status(400).send("UserName don`t exist")
+    }
+
+    if (existingNickName.password != password)
+    {
+        return res.status(400).send("Password error")
+    }
+
+    return res.status(200).send(existingNickName)
+}
+
+
+module.exports = { addUser, checkUser };
