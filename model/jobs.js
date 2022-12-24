@@ -9,7 +9,9 @@ const jobSchema = new mongoose.Schema({
   time: {type: Date, default: Date.now},
   tags: {type: Array},
   benefits: {type: Array},
-  description: {type: String}
+  description: {type: String},
+  idCompany: {type: String},
+  isShow: {type: Boolean}
 });
 
 module.exports = mongoose.model("user", jobSchema);
