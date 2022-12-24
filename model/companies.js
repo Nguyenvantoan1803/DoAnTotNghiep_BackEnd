@@ -14,7 +14,7 @@ const companySchema = new mongoose.Schema({
   skills: {type: Array},
   reasons: {type: Array},
   benefits: {type: Array},
-  rating: {type: Float32Array}
+  rating: {type: Number}
 });
 
 module.exports = mongoose.model("user", companySchema);
