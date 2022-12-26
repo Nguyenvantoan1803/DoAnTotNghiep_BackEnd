@@ -6,6 +6,9 @@ const addUser = async (req, res) => {
 
     }
     const {email,username,password} = req.body;
+    if (!email || !username || !password){
+        return res.status(409).send("Request all fields")
+    }
     const existingEmail = await User.findOne({email})
     if (existingEmail){
         return res.status(409).send("Email already exist")
@@ -23,8 +26,7 @@ const checkUser = async (req, res) => {
         return res.status(400).send("Body can`t be empty")
     }
     const {username,password} = req.body;
-
-    const existingNickName = await User.findOne({username})
+    const existingNickName = await User.findOne({username: username})
     if (!existingNickName){
         return res.status(400).send("UserName don`t exist")
     }
