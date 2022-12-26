@@ -5,7 +5,7 @@ const addUser = async (req, res) => {
         return res.status(400).send("Body can`t be empty")
 
     }
-    const {email,username,password,cv} = req.body;
+    const {email,username,password} = req.body;
     const existingEmail = await User.findOne({email})
     if (existingEmail){
         return res.status(409).send("Email already exist")
@@ -14,7 +14,7 @@ const addUser = async (req, res) => {
     if (existingNickName){
         return res.status(409).send("UserName already exist")
     }
-    const newUser = await User.create({email,username,password,cv});
+    const newUser = await User.create({email,username,password});
     return res.status(201).send(newUser)
 }
 
