@@ -11,7 +11,7 @@ var storage = multer.diskStorage({
   })
 var upload = multer({ storage: storage })
 
-const {addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob, getJobDetail} = require('../controllers/job')
+const {addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob, getJobDetail, getJobDidCloseByCompany} = require('../controllers/job')
 
 router.get("/",getJobByTime)
 router.get("/:idCompany",getJobByIdCompany)
@@ -20,5 +20,6 @@ router.post("/close",closeJob)
 router.post("/open",openJob)
 router.post("/update", upload.single('image') ,updateJob)
 router.get("/detail/:_id",getJobDetail)
+router.get("/close_job/:_id",getJobDidCloseByCompany)
 
 module.exports = router;

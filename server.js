@@ -6,7 +6,7 @@ const cors = require("cors")
 require('dotenv').config();
 const userRouter = require('./routes/user')
 const jobRouter = require('./routes/jobs')
-
+const companyRouter = require('./routes/companies')
 app.set("view engine", "ejs");
 
 connectDB();
@@ -18,6 +18,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/user', userRouter);
 app.use('/api/job', jobRouter);
+app.use('/api/company', companyRouter);
 
 const server = app.listen(process.env.PORT, () =>
   console.log(`Server Connected to port ${process.env.PORT}`)

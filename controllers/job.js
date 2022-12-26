@@ -85,7 +85,7 @@ const openJob = async (req, res) => {
 }
 const getJobByIdCompany = async (req, res) => {
     const { idCompany } = req.params;
-    const listJob = await Jobs.find({ idCompany: idCompany, isShow: true })
+    const listJob = await Jobs.find({ isShow: true }).where('idCompany').equals(idCompany)
     const result = listJob.map((job) => {
         return ({
             _id: job._id,
@@ -114,5 +114,11 @@ const getJobDetail = async (req, res) => {
     return res.status(200).send(job)
 }
 
+const getJobDidCloseByCompany = async (req, res) => {
+    const {_id} = req.params
+    const listJob = await Jobs.find({idCompany: _id}).where('isShow').equals(false)
+    return res.status(200).send(listJob)
+}
 
-module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob, getJobDetail };
+
+module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob, getJobDetail, getJobDidCloseByCompany };

@@ -11,12 +11,11 @@ var storage = multer.diskStorage({
   })
 var upload = multer({ storage: storage })
 
-const {addUser, checkUser, uploadCV, getCV, approveJob} = require('../controllers/user')
+const {createCompany, findCompany, uploadCompany,ratingCompany} = require('../controllers/company')
 
-router.post("/",addUser)
-router.post("/login",checkUser)
-router.post("/uploadCv", upload.single('file') ,uploadCV)
-router.get("/:username",getCV)
-router.post("/approve",approveJob)
+router.post("/",createCompany)
+router.post("/check",findCompany)
+router.post("/update",uploadCompany)
+router.post("/rating",ratingCompany)
 
 module.exports = router;

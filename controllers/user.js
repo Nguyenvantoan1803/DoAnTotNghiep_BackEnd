@@ -1,4 +1,14 @@
-const User = require('../model/user')
+const User = require('../model/user');
+const Companies = require('../model/companies');
+const Jobs = require('../model/jobs')
+const nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.userEmail,
+        pass: process.env.passEmail
+    }
+})
 
 const addUser = async (req, res) => {
     if (Object.keys(req.body).length === 0){
@@ -64,4 +74,38 @@ const getCV = async (req, res) => {
     return res.sendFile(`/public/uploads/${existingUser.cv}`, { root: '.' })
 }
 
-module.exports = { addUser, checkUser, uploadCV, getCV };
+const approveJob = async (req, res) => {
+    if (Object.keys(req.body).length === 0){
+        return res.status(400).send("Body can`t be empty")
+    }
+    const { idUser, idJob } = req.body
+    const user = await User.findById(idUser)
+    if (!user){
+        return res.status(409).send("User don`t exist")
+    }
+    const job = await Jobs.findById(idJob)
+    if (!job){
+        return res.status(409).send("Job don`t exist")
+    }
+    const company = await Companies.findById(job.idCompany)
+    const cvDetail = ('http://localhost:5000/api/user/' + `${user.username}`)
+
+    var mailOptions = {
+        from: process.env.userEmail,
+        to: company.email,
+        html: `<b>Bạn có người ứng cử việc ${job.title}. Bấm vào <a href='${cvDetail}'>${user.username}</a> để xem CV</b>`
+    };
+    
+    transporter.sendMail(mailOptions, function(err,info) {
+        if(err) {
+            return console.log(err)
+        } else 
+        {
+            console.log(info.response)
+        }
+    });
+
+    return res.status(200).send("sucess")
+}
+
+module.exports = { addUser, checkUser, uploadCV, getCV, approveJob };
