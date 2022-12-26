@@ -36,8 +36,12 @@ app.get("/", (req, res, next) => {
           });
       }
   });
-
-  res.send('<h1>List of routes.</h1>' + JSON.stringify(routes));
+  routes.map(value => console.log(value));
+  res.send('<h1>List of routes.</h1>' + `
+  <ol>
+  ${routes.map(route => (`<li>${JSON.stringify(route)}</li>`))}
+  </ol>
+  `)
 });
 
 

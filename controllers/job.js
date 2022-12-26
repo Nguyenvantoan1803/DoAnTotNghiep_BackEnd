@@ -85,14 +85,34 @@ const openJob = async (req, res) => {
 }
 const getJobByIdCompany = async (req, res) => {
     const { idCompany } = req.params;
-    const listJob = await Jobs.find({ idCompany: idCompany})
-    return res.status(201).send(listJob)
+    const listJob = await Jobs.find({ idCompany: idCompany, isShow: true })
+    const result = listJob.map((job) => {
+        return ({
+            _id: job._id,
+            image: job.image,
+            title: job.title
+        })
+    })
+    return res.status(201).send(result)
 }
 
 const getJobByTime = async (req, res) => {
-    const listJob = await Jobs.find().sort({ time: -1})
-    return res.status(201).send(listJob)
+    const listJob = await Jobs.find({isShow: true}).sort({ time: -1})
+    const result = listJob.map((job) => {
+        return ({
+            _id: job._id,
+            image: job.image,
+            title: job.title
+        })
+    })
+    return res.status(201).send(result)
+}
+
+const getJobDetail = async (req, res) => {
+    const {_id} = req.params
+    const job = await Jobs.findOne({_id: _id})
+    return res.status(200).send(job)
 }
 
 
-module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob };
+module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob, getJobDetail };
