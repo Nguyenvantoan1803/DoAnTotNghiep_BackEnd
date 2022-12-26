@@ -58,6 +58,31 @@ const closeJob = async (req, res) => {
     })
     return res.status(201).send('Sucess')
 }
+
+const openJob = async (req, res) => {
+    if (Object.keys(req.body).length === 0){
+        return res.status(400).send("Body can`t be empty")
+    }
+    const {idJob,idCompany} = req.body;
+    if (!idCompany){
+        return res.status(409).send("What is Company?")
+    }
+    if (!idJob){
+        return res.status(409).send("What is Job?")
+    }
+    const job = await Jobs.findOne({idJob});
+    if (!job){
+        return res.status(409).send("Job don't exist")
+    }
+    if (job.idCompany != idCompany)
+    {
+        return res.status(409).send("Not pemisstion")
+    }
+    await Jobs.findByIdAndUpdate(idJob,{
+        isShow: true
+    })
+    return res.status(201).send('Sucess')
+}
 const getJobByIdCompany = async (req, res) => {
     const { idCompany } = req.params;
     const listJob = await Jobs.find({ idCompany: idCompany})
@@ -70,4 +95,4 @@ const getJobByTime = async (req, res) => {
 }
 
 
-module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime };
+module.exports = { addJob, closeJob, updateJob, getJobByIdCompany, getJobByTime, openJob };
