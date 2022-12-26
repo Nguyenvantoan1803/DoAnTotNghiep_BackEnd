@@ -17,4 +17,4 @@ const companySchema = new mongoose.Schema({
   rating: {type: Number}
 });
 
-module.exports = mongoose.model("user", companySchema);
+module.exports = mongoose.model("companies", companySchema);

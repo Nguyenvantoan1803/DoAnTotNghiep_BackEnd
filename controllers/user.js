@@ -40,12 +40,11 @@ const checkUser = async (req, res) => {
 const uploadCV = async (req, res) => {
     const checkFile = req.file
     if (!checkFile) {
-      return res.status(200).send('Please upload a file')
+      return res.status(409).send('Please upload a file')
     }
     const { _id } = req.body;
-    const file = req.file;
     const updateUser = await User.findByIdAndUpdate(_id,{
-        cv: file.filename
+        cv: checkFile.filename
     })
     return res.status(200).send(updateUser)
 }
@@ -55,10 +54,10 @@ const getCV = async (req, res) => {
     console.log(username);
     const existingUser = await User.findOne({username})
     if (!existingUser){
-        return res.status(400).send("UserName don`t exist")
+        return res.status(409).send("UserName don`t exist")
     }
     if (existingUser.cv==""){
-        return res.status(200).send("UserName don`t cv")
+        return res.status(409).send("UserName don`t cv")
     }
     return res.sendFile(`/public/uploads/${existingUser.cv}`, { root: '.' })
 }

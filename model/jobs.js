@@ -14,4 +14,4 @@ const jobSchema = new mongoose.Schema({
   isShow: {type: Boolean}
 });
 
-module.exports = mongoose.model("user", jobSchema);
+module.exports = mongoose.model("jobs", jobSchema);
